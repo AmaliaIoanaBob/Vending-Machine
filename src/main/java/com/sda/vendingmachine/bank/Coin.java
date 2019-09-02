@@ -1,4 +1,5 @@
 package com.sda.vendingmachine.bank;
 
-public class Coin {
+public enum  Coin {
+    PENNY, NICKEL, DIME, QUARTER, HALF, ONE_DOLLAR
 }
