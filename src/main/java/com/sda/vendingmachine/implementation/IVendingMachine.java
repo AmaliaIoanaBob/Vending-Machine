@@ -8,9 +8,9 @@ import java.util.Queue;
 
 public interface IVendingMachine {
 
-    Item getITem(int productCode); //int productCode inseamna codul produsului, tasta 22, etc
+    Item getItem(int productCode); //int productCode inseamna codul produsului, tasta 22, etc
 
-    void payITem(int productCode, Queue<Coin> amountPayed);
+    void payItem(int productCode, Queue<Coin> amountPayed);
 
     void getChange(BigDecimal amountExpected, BigDecimal amountReceived);
 
