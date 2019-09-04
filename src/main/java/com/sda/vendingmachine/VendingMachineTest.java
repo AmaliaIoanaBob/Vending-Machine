@@ -73,11 +73,29 @@ public class VendingMachineTest {
         iVendingMachine.setBank(bank);
 
         System.out.println("Produsul este: " + iVendingMachine.getItem(22));
-
-        iVendingMachine.getItem(30);
-
         System.out.println(vendingStorage);
 
+
+        Queue<Coin> wallet1 = new ArrayDeque<>();
+        wallet1.add(Coin.ONE_DOLLAR);
+        wallet1.add(Coin.DIME);
+        wallet1.add(Coin.HALF);
+        wallet1.add(Coin.PENNY);
+        wallet1.add(Coin.QUARTER);
+        wallet1.add(Coin.NICKEL);
+        wallet1.add(Coin.PENNY);
+        wallet1.add(Coin.PENNY);
+        wallet1.add(Coin.PENNY);
+        wallet1.add(Coin.PENNY);
+        wallet1.add(Coin.NICKEL);
+        wallet1.add(Coin.ONE_DOLLAR);
+        wallet1.add(Coin.ONE_DOLLAR);
+        wallet1.add(Coin.ONE_DOLLAR);
+
         System.out.println(bank);
+
+        iVendingMachine.payItem(22,wallet1 );
+        System.out.println(bank);
+
     }
 }

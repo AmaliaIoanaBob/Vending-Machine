@@ -2,6 +2,7 @@ package com.sda.vendingmachine.implementation;
 
 import com.sda.vendingmachine.bank.Bank;
 import com.sda.vendingmachine.bank.Coin;
+import com.sda.vendingmachine.exceptions.NotSufficientChangeException;
 import com.sda.vendingmachine.exceptions.SoldOutException;
 import com.sda.vendingmachine.storage.Item;
 import com.sda.vendingmachine.storage.VendingStorage;
@@ -39,7 +40,16 @@ public class VendingMachineImpl implements IVendingMachine {
     }
 
     public void payItem(int productCode, Queue<Coin> amountPayed) {
+        Map<Integer, Queue<Item>> storageMap = storage.getStorageMap();
+        Queue<Item> queueByProductCode = storageMap.get(productCode);
+        BigDecimal amountExpected = queueByProductCode.peek().getPrice(); //ne-am uitat in queue sa vedem cat platim
+        BigDecimal amountPaidAsBigDecimal = getTotalMoneyAsBigDecimal(amountPayed); //metoda apelata, apoi folosita ca variabila
 
+        if (amountPaidAsBigDecimal.compareTo(amountExpected) < 0) {
+            throw new NotSufficientChangeException("You didn't paid enough");
+        } else {
+            bank.updateBank(amountPayed);
+        }
     }
 
     public void getChange(BigDecimal amountExpected, BigDecimal amountReceived) {
@@ -49,4 +59,34 @@ public class VendingMachineImpl implements IVendingMachine {
     public void cancelRequest() {
 
     }
+
+    private BigDecimal getTotalMoneyAsBigDecimal(Queue<Coin> money) {
+        BigDecimal total = BigDecimal.ZERO;
+        for (Coin m: money) {
+            switch (m) {
+                case ONE_DOLLAR:
+                    //adunam la total
+                    total = total.add(BigDecimal.valueOf(1));
+                    break;
+                case HALF:
+                    total = total.add(BigDecimal.valueOf(0.5));
+                    break;
+                case DIME:
+                    total = total.add(BigDecimal.valueOf(0.1));
+                    break;
+                case NICKEL:
+                    total = total.add(BigDecimal.valueOf(0.05));
+                    break;
+                case PENNY:
+                    total = total.add(BigDecimal.valueOf(0.01));
+                    break;
+                case QUARTER:
+                    total = total.add(BigDecimal.valueOf(0.25));
+                    break;
+            }
+
+        }
+        return total;
+    }
+
 }
